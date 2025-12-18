@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Data Pelanggan - Sales ISP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e7eb;
+    }
+    .container {
+      width: 100%;
+      max-width: 920px;
+      background: rgba(15,23,42,.95);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.6);
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 26px;
+    }
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #c7d2fe;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 11px 12px;
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      color: #e5e7eb;
+      outline: none;
+      transition: border .2s, box-shadow .2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99,102,241,.3);
+    }
+    textarea { resize: vertical; }
+    .full { grid-column: 1 / -1; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    button {
+      padding: 12px 20px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 25px rgba(0,0,0,.35);
+      opacity: .95;
+    }
+    .btn-primary { background: linear-gradient(135deg,#6366f1,#4338ca); color:#fff; }
+    .btn-secondary { background: linear-gradient(135deg,#22c55e,#15803d); color:#fff; }
+    .btn-danger { background: linear-gradient(135deg,#ef4444,#991b1b); color:#fff; }
+    h3 {
+      margin-top: 30px;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    pre {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 18px;
+      font-size: .9rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      min-height: 160px;
+    }
+    .hint { font-size: .75rem; color:#94a3b8; margin-top:4px; }
+    @media(max-width:768px){ form { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Generator Data Pelanggan RJA NETWORK</h1>
+
+    <form id="formPelanggan">
+      <div>
+        <label>Nama Pelanggan</label>
+        <input type="text" id="nama" placeholder="Contoh: Budi Santoso" required />
+      </div>
+      <div>
+        <label>Nomor Telepon</label>
+        <input type="text" id="telepon" placeholder="08xxxxxxxxxx" required />
+      </div>
+      <div>
+        <label>SN ONT</label>
+        <input type="text" id="snont" placeholder="Serial Number ONT" />
+        <div class="hint">Otomatis huruf besar</div>
+      </div>
+      <div>
+        <label>Tanggal Pemasangan</label>
+        <input type="date" id="tanggal" required />
+      </div>
+      <div class="full">
+        <label>Alamat</label>
+        <input type="text" id="alamat" placeholder="Alamat lengkap pelanggan" />
+      </div>
+      <div class="full">
+        <label>Paket Internet</label>
+        <select id="paket">
+          <option value="">-- Pilih Paket Internet --</option>
+          <option value="10 Mbps">15 Mbps</option>
+          <option value="20 Mbps">20 Mbps</option>
+          <option value="30 Mbps">30 Mbps</option>
+		  <option value="30 Mbps">40 Mbps</option>
+          <option value="50 Mbps">50 Mbps</option>
+          <option value="100 Mbps">100 Mbps</option>
+          <option value="Custom">Custom / Lainnya</option>
+        </select>
+      </div>
+      <div class="full" id="paketCustomBox" style="display:none;">
+        <label>Paket Custom</label>
+        <input type="text" id="paketCustom" placeholder="Contoh: 75 Mbps" />
+      </div>
+      <div class="full">
+        <label>Catatan Teknisi</label>
+        <textarea id="catatan" rows="3" placeholder="Catatan tambahan"></textarea>
+      </div>
+      <div class="full actions">
+        <button type="submit" class="btn-primary">Generate</button>
+        <button type="button" onclick="salin()" class="btn-secondary">Salin</button>
+        <button type="reset" class="btn-danger">Reset</button>
+      </div>
+    </form>
+
+    <h3>Hasil Generator</h3>
+    <pre id="hasil">Belum ada data.</pre>
+  </div>
+
+  <script>
+    const form = document.getElementById('formPelanggan');
+    const hasil = document.getElementById('hasil');
+    const tanggalInput = document.getElementById('tanggal');
+    const snontInput = document.getElementById('snont');
+    const paketSelect = document.getElementById('paket');
+    const paketCustomBox = document.getElementById('paketCustomBox');
+    const paketCustom = document.getElementById('paketCustom');
+
+    // isi otomatis tanggal hari ini
+    tanggalInput.value = new Date().toISOString().split('T')[0];
+
+    // SN ONT otomatis uppercase
+    snontInput.addEventListener('input', () => {
+      snontInput.value = snontInput.value.toUpperCase();
+    });
+
+    // tampilkan input paket custom
+    paketSelect.addEventListener('change', () => {
+      paketCustomBox.style.display = paketSelect.value === 'Custom' ? 'block' : 'none';
+    });
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const paketValue = paketSelect.value === 'Custom' ? paketCustom.value : paketSelect.value;
+
+      const output = `INPUT PELANGGAN\n`+
+        `Nama            : ${nama.value}\n`+
+        `Telepon         : ${telepon.value}\n`+
+        `SN ONT          : ${snont.value}\n`+
+        `Tanggal Pasang  : ${tanggal.value}\n`+
+        `Alamat          : ${alamat.value}\n`+
+        `Paket Internet  : ${paketValue}\n`+
+        `Catatan         : ${catatan.value}`;
+
+      hasil.textContent = output;
+    });
+
+    function salin(){
+      navigator.clipboard.writeText(hasil.textContent)
+        .then(()=> alert('Hasil berhasil disalin ke clipboard'))
+        .catch(()=> alert('Gagal menyalin'));
+    }
+  </script>
+</body>
+</html>
