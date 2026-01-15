@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Generator Pergantian ONT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #eef2f7;
+        padding: 20px;
+    }
+    .card {
+        max-width: 650px;
+        margin: auto;
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    label {
+        font-weight: bold;
+        margin-top: 12px;
+        display: block;
+    }
+    input, select, textarea {
+        width: 100%;
+        margin-top: 6px;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    button {
+        width: 100%;
+        margin-top: 18px;
+        padding: 12px;
+        font-size: 15px;
+        border: none;
+        border-radius: 6px;
+        background: #0069d9;
+        color: #fff;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #0053b3;
+    }
+    .result {
+        margin-top: 20px;
+    }
+    .result textarea {
+        height: 220px;
+        font-family: Consolas, monospace;
+        background: #f8f9fa;
+    }
+    .req {
+        color: red;
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Generator Pergantian ONT</h2>
+
+    <label>Nama Pelanggan</label>
+    <input type="text" id="nama" placeholder="Contoh: Budi Santoso">
+
+    <label>Area</label>
+    <select id="area">
+        <option value="">-- Pilih Area --</option>
+        <option>Area PALIR</option>
+        <option>Area PESANGGRAHAN</option>
+    </select>
+
+    <label>Tanggal</label>
+    <input type="text" id="tanggal" readonly>
+
+    <label>SN ONT Lama</label>
+    <input type="text" id="snLama" placeholder="ZTEGXXXXXXXX">
+
+    <label>SN ONT Baru</label>
+    <input type="text" id="snBaru" placeholder="ZTEGXXXXXXXX">
+
+    <label>Kendala Gangguan <span class="req">*</span></label>
+    <textarea id="kendala" placeholder="Wajib diisi, contoh: ONT mati total / LOS merah"></textarea>
+
+    <button onclick="generate()">Generate Tiket</button>
+
+    <div class="result">
+        <label>Hasil Laporan</label>
+        <textarea id="output" readonly></textarea>
+    </div>
+</div>
+
+<script>
+    // Set tanggal otomatis
+    const now = new Date();
+    const tgl = String(now.getDate()).padStart(2, '0') + '-' +
+                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                now.getFullYear();
+    document.getElementById("tanggal").value = tgl;
+
+    function generate() {
+        const nama = document.getElementById("nama").value.trim();
+        const area = document.getElementById("area").value;
+        const tanggal = document.getElementById("tanggal").value;
+        const snLama = document.getElementById("snLama").value.trim();
+        const snBaru = document.getElementById("snBaru").value.trim();
+        const kendala = document.getElementById("kendala").value.trim();
+
+        if (!kendala) {
+            alert("Kendala gangguan wajib diisi!");
+            return;
+        }
+
+        // Tiket INC otomatis
+        const tiket = "INC" + Date.now().toString().slice(-8);
+
+        const laporan =
+`LAPORAN PERGANTIAN ONT
+
+Nama Pelanggan : ${nama}
+Area           : ${area}
+Tanggal        : ${tanggal}
+
+SN ONT Lama    : ${snLama}
+SN ONT Baru    : ${snBaru}
+
+Kendala Gangguan:
+${kendala}
+
+Tiket Gangguan : ${tiket}
+Status         : Permintaan`;
+
+        document.getElementById("output").value = laporan;
+    }
+</script>
+
+</body>
+</html>

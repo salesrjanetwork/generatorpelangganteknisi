@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Menu Aplikasi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+}
+
+h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.menu-item {
+    background: #ffffff;
+    border-radius: 12px;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+.menu-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.menu-item span {
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Pilih Menu Aplikasi Generate</h1>
+
+<div class="menu-container">
+    <div class="menu-item" onclick="location.href='menu1.html'">
+        <img src="img/logo1.png">
+        <span>Pasang Baru</span>
+    </div>
+
+    <div class="menu-item" onclick="location.href='menu2.html'">
+        <img src="img/logo2.png">
+        <span>Migrasi</span>
+    </div>
+
+    <div class="menu-item" onclick="location.href='menu3.html'">
+        <img src="img/logo3.png">
+        <span>Ganti Ont</span>
+    </div>
+
+    <div class="menu-item" onclick="location.href='menu4.html'">
+        <img src="img/logo4.png">
+        <span>Dalam Pengembangan</span>
+    </div>
+</div>
+
+</body>
+</html>
